@@ -31,12 +31,11 @@ pipeline {
 
       }
     }
-    stage('Deploy') {
-       steps {
-       echo 'Deploying application...'
-       sh 'pwd'
-       sh 'date'
-       sh 'id'
+ stage('Deploy') {
+    steps {
+        echo 'Deploying application...'
+        sshagent(credentials: ['creds_srv']) {
+          sh 'ssh -o StrictHostKeyChecking=no blevenzon@192.168.4.238 "cd web_app && git pull && go build ./web_app.go && ./web_app &"'
       }
      }
     }
