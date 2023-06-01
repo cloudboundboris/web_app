@@ -26,7 +26,7 @@ pipeline {
         echo 'Testing application...'
         sh './web_app &'
         sh '''response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:80) &&
-        echo Resoince is: $response &&
+        echo Response is: $response &&
         [ "$response" = "200" ] && exit 0 || exit 1'''
 
       }
@@ -35,7 +35,7 @@ pipeline {
     steps {
         echo 'Deploying application...'
         sshagent(credentials: ['creds_srv']) {
-          sh 'ssh -o StrictHostKeyChecking=no root@192.168.4.238 "cd web_app && git pull && go build ./web_app.go && ./web_app &"'
+          sh 'ssh -o StrictHostKeyChecking=no root@192.168.4.238 "cd /web_app && git pull && go build ./web_app.go && ./web_app &"'
       }
      }
     }
